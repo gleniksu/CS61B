@@ -5,6 +5,7 @@ public class Body{
   public double yyVel;
   public double mass;
   public String imgFileName;
+  static final double G = 6.67e-11;
 /*
  * Class Body constructor
  */
@@ -35,4 +36,10 @@ public class Body{
     return Math.sqrt(Math.pow(xxDis, 2) + Math.pow(yyDis, 2));
   }
 
+  /*
+   * Return the force exerted on this body by given body.
+   */
+   public double calcForceExertedBy(Body b){
+     return (G * mass * b.mass) / Math.pow(calcDistance(b), 2);
+   }
 }
