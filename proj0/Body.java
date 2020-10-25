@@ -6,7 +6,7 @@ public class Body{
   public double mass;
   public String imgFileName;
 /*
- * Body class constructor
+ * Class Body constructor
  */
   public Body(double xP, double yP, double xV, double yV, double m, String img){
     xxPos = xP;
@@ -25,4 +25,14 @@ public class Body{
     mass = b.mass;
     imgFileName = b.imgFileName;
   }
+
+  /*
+   * Return the distance between two Bodys.
+   */
+  public double calcDistance(Body b){
+    double xxDis = b.xxPos - xxPos;
+    double yyDis = b.yyPos - yyPos;
+    return Math.sqrt(Math.pow(xxDis, 2) + Math.pow(yyDis, 2));
+  }
+
 }
