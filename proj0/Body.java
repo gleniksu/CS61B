@@ -5,7 +5,7 @@ public class Body{
   public double yyVel;
   public double mass;
   public String imgFileName;
-  static final double G = 6.67e-11;
+  static final double G = 6.67e-11; //A final variable can be explicitly initialized only once. A reference variable declared final can be never be reassigned to refer to an different object.
 /*
  * Class Body constructor
  */
@@ -41,5 +41,20 @@ public class Body{
    */
    public double calcForceExertedBy(Body b){
      return (G * mass * b.mass) / Math.pow(calcDistance(b), 2);
+   }
+
+   /*
+    * Return the force exerted in X and Y direction.
+    */
+   public double calcForceExertedByX(Body b){
+     double toDis = calcFOrceExertedByX(b);
+     double dx = xxPos + b.xxPos;
+     return (dx / r) * calcFOrceExertedBy(b);
+   }
+
+   public double calcForceExertedByY(Body b){
+     double toDis = calcForceExertedByX(b);
+     double dy = yyPos + b.yyPos;
+     return (dy / r) * calcForceExertedBy(b);
    }
 }
