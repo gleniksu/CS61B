@@ -81,4 +81,14 @@ public class Body{
         return NetForceY;
     }
 
+    public void update(double dt, double Fx, double Fy){
+      double xxAcc, yyAcc;
+      xxAcc = Fx / mass;
+      yyAcc = Fy / mass;
+      xxVel = xxVel + dt * xxAcc;
+      yyVel = yyVel + dt * yyAcc;
+      xxPos = xxPos + dt * xxVel;
+      yyPos = yyPos + dt * yyVel;
+    }
+
 }
