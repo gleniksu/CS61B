@@ -28,11 +28,72 @@ public class NBody{
      return planet;
    }
 
-   public void main(String[] args){
+   public static void main(String[] args){
      double T = Double.parseDouble(args[0]);
      double dt = Double.parseDouble(args[1]);
      String filename = args[2];
      double radius = readRadius(filename);
      Body[] planet = readBodies(filename);
-   }
+
+     /*
+      * Draw the background.
+      */
+     StdDraw.setScale(-radius, radius);
+     StdDraw.clear();
+     StdDraw.picture(0, 0, "images/starfield.jpg");
+     /**
+      * Draw the planet.
+      */
+     for(Body each: planet){
+       each.draw();
+     }
+     /**
+      * Animation
+      */
+     StdDraw.enableDoubleBuffering();
+
+     for (double t = 0; t <= T;){
+       double[] xForces = new double[planet.length];
+       double[] yForces = new double[planet.length];
+       /**
+        * Calculate the net forces for every planet
+        */
+        for(int i = 0; i < planet.length; i++){
+          xForces[i] = planet[i].calcNetForceExertedByX(planet);
+          yForces[i] = planet[i].calcNetForceExertedByY(planet);
+        }
+        /**
+         * Update positions, velocity, and accleration.
+         */
+         for(int i = 0; i < planet.length; i++){
+           planet[i].update(dt, xForces[i], yForces[i]);
+         }
+         /**
+          * Draw the background image.
+          */
+          StdDraw.picture(0, 0, "images/starfield.jpg");
+
+          /**
+           * Draw all of the Bodys.
+           */
+           for(Body each: planet){
+             each.draw();
+           }
+           /**
+            * Show the offscreen buffer.
+            */
+            StdDraw.show();
+
+           /**
+            * Pause the animation for 10 miliseconds.
+            */
+            StdDraw.pause(10000000);
+
+           /**
+            * Increase time by dt.
+            */
+             t += dt;
+
+     }
+     }
 }
