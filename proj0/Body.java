@@ -91,4 +91,11 @@ public class Body{
       yyPos = yyPos + dt * yyVel;
     }
 
+    /*
+    * Draw the Body's image at the Body's position.
+    */
+    public void draw(){
+      StdDraw.picture(xxPos, yyPos, imgFileName);
+    }
+
 }
