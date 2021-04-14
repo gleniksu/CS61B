@@ -1,3 +1,4 @@
+
 public class Body{
   public double xxPos;
   public double yyPos;
@@ -95,7 +96,7 @@ public class Body{
     * Draw the Body's image at the Body's position.
     */
     public void draw(){
-      StdDraw.picture(xxPos, yyPos, imgFileName);
+      StdDraw.picture(xxPos, yyPos, "images/" + imgFileName);
     }
 
 }

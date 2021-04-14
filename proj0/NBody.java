@@ -87,7 +87,7 @@ public class NBody{
            /**
             * Pause the animation for 10 miliseconds.
             */
-            StdDraw.pause(10000000);
+            StdDraw.pause(10);
 
            /**
             * Increase time by dt.
