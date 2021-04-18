@@ -17,8 +17,9 @@ public class LinkedListDeque <T> {
     private int size = 0;
     private Node sentinel;
 
-    /* Create a empty linked list deque. */
-
+    /**
+     * Create a empty linked list deque.
+     */
     public LinkedListDeque() {
         sentinel = new Node(null, null, null);
         sentinel.next = sentinel;
@@ -27,7 +28,9 @@ public class LinkedListDeque <T> {
     }
 
 
-    /* Adds an item of type T to the front of the deque. */
+    /**
+     * Adds an item of type T to the front of the deque.
+     */
 
     public void addFirst(T i) {
         sentinel.next = new Node(sentinel, i, sentinel.next);
@@ -119,5 +122,19 @@ public class LinkedListDeque <T> {
             size = size - 1;
         }
         System.out.print("\n");
+    }
+
+    /**
+     * Create a deep copy with the exact same items as other.
+     */
+    public LinkedListDeque(LinkedListDeque other) {
+        sentinel = new Node(null, null, null);
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
+        size = 0;
+
+        for (int i = 0; i < other.size(); i++) {
+            addFirst((T) other.get(i)); //
+        }
     }
 }
