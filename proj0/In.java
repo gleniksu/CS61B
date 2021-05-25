@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public final class In {
+public class In {
     
     private Scanner scanner;
 

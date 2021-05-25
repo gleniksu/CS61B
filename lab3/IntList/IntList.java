@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -44,9 +44,11 @@ public class IntList {
         }
     }
 
-    /** Add a new item into the list.*/
-    public void addFirst(int i,IntList L){
-       L = new IntList(i, L);
+    /**
+     * Add a new item into the list.
+     */
+    public void addFirst(int i, IntList L) {
+        L = new IntList(i, L);
     }
 
     /**
@@ -75,12 +77,8 @@ public class IntList {
             return null;
         }
         return new IntList(L.first * L.first, squareListRecursive(L.rest));
-
     }
 
-    public static IntList reverse(IntList A){
-        return null;
-    }
     /** DO NOT MODIFY ANYTHING ABOVE THIS LINE! */
 
 
@@ -114,6 +112,26 @@ public class IntList {
         }
         return new IntList(A.first, catenate(A.rest, B));
     }
+
+    /**
+     * Returns a list consisting of the reverse elements of A.(Iterative version)
+     */
+
+    public static IntList reverse(IntList A) {
+        if (A == null || A.rest == null) {
+            return null;
+        }
+        IntList ptr = A.rest;
+        A.rest = null;
+        while (ptr != null) {
+            IntList temp = ptr.rest;
+            ptr.rest = A;
+            A = ptr;
+            ptr = temp;
+        }
+        return A;
+    }
+
 
 
 
