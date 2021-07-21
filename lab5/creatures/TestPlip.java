@@ -1,4 +1,5 @@
 package creatures;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.HashMap;
@@ -33,9 +34,17 @@ public class TestPlip {
     @Test
     public void testReplicate() {
         // TODO
+        double originEnergy = 1;
+        Plip p = new Plip(originEnergy);
+        Plip cp = p.replicate();
+        double result = 1 * 0.5;
+        assertTrue(p != cp);
+        assertNotEquals(p.energy(), originEnergy);
+        assertEquals(p.energy(), cp.energy(), 0.1);
+
     }
 
-    //@Test
+    @Test
     public void testChoose() {
 
         // No empty adjacent spaces; stay.
