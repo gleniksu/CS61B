@@ -1,4 +1,5 @@
-public class UnionFind {
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+public class UnionFind extends WeightedQuickUnionUF{
 
     // TODO - Add instance variables?
 

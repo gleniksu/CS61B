@@ -14,6 +14,13 @@ public class BubbleGrid {
      * and have no side-effects to grid. */
     public int[] popBubbles(int[][] darts) {
         // TODO
-        return null;
+        int i;
+        int j;
+        UnionFind p = UnionFind(darts[i][j]);
+        if(i != 0)
+            p.connected(darts[i+1][j]);
+            p.connected(darts[i-1]);
+            p.connected(darts[i][j+1]);
+
     }
 }
