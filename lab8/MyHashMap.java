@@ -1,13 +1,10 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
     int size;
     ArrayList<Node> bucket;
     double loadFactor;
-    Set<Key> kSet;
+    Set<Key> kSet = new HashSet<Key>();
 
     public MyHashMap() {
         this(16, 0.75);
@@ -31,22 +28,18 @@ public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
 
     @Override
     public boolean containsKey(Key key) {
-        int bucketNum = bucket.size();
-        int target = bucket.indexOf(key.hashCode() % bucketNum);
-        if  (target == -1) {
-            return false;
-        }
-        return find(key, bucket.get(target)) != null;
+        /*int bucketNum = bucket.size();
+        Node target = bucket.get(key.hashCode() % bucketNum); //由于bucket里面存的是Node, 而key.hashCode() % bucketNum
+                                                                //是一个数字 并不可能出现在里面 target永远都是-1.我需要看下那个位置是否为null
+        return find(key, target) != null;*/
+        return kSet.contains(key);
     }
 
     @Override
     public Val get(Key key) {
         int bucketNum = bucket.size();
-        int target = bucket.indexOf(key.hashCode() % bucketNum);
-        if(target == -1) {
-            return null;
-        }
-        return find(key, bucket.get(target));
+        Node target = bucket.get(hash(key, bucketNum));
+        return find(key, target).value;
     }
 
 
@@ -57,12 +50,41 @@ public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
 
     @Override
     public void put(Key key, Val value) {
-        size += 1;
+        /*double currFactor =  size / bucket.size();
+        int bucketNum = bucket.size();
+        Node tempNode;
+        if (currFactor >= loadFactor) {
+            resize(key, value, bucketNum);
+        } else {
+            tempNode = bucket.get(bucket.hashCode() % bucketNum);
+            Node targetNode = find(key, tempNode);
+            if (targetNode != null) {       //不等于null就说明链表里已经存在key了
+                targetNode.val = value;
+            } else {
+               targetNode = findLast(tempNode);
+               targetNode.key = key;
+               targetNode.val = value;
+               targetNode.next = null;
+               size += 1;
+            }
+        }*/
+        int bucketNum = bucket.size();
+        double currFactor = size / bucket.size();
+        Node tempNode;
+        if (currFactor >= loadFactor) {
+            resize(key, bucketNum);
+        } else {
+            if (kSet.contains(key)) {
+                update(key, value);
+            } else {
+                add(key, value);
+            }
+        }
     }
 
     @Override
     public Set<Key> keySet() {
-        return null;
+        return kSet;
     }
 
     @Override
@@ -77,29 +99,54 @@ public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
 
     @Override
     public Iterator<Key> iterator() {
-        return null;
+        return keySet().iterator();
+    }
+
+    private int hash(Key key, int bucketNum) {
+        return 1;
     }
 
     /**
      * These are some helper functions.
      * No need to read.
      */
-    private Val find(Key k, Node next) {
-        while (next != null) {
-            if (next.key == k) {
-                return next.val;
+
+    /** resize Function. */
+    private void resize(Key k, int cap) {
+        bucket = new ArrayList<Node>(cap * 2);
+        for (Key kTemp: kSet) {
+
+        }
+    }
+
+    /** Returns specify Node if key is equal to k else return null. */
+    private Node find(Key k, Node node) {
+        while (node.key != null) {
+            if (node.key == k) {
+                return node;
             }
-            next = next.next;
+            node = node.next;
         }
-        if (next.key == k) {
-            return next.val;
+        return node;
+    }
+
+    /** Return the last node. */
+    private Node findLast(Node node) {
+        while (node.key != null) {
+            node = node.next;
         }
-        return null;
+        return node;
     }
 
     private class Node {
         Key key;
-        Val val;
+        Val value;
         Node next;
+
+        Node(Key k, Val v, Node n) {
+            key = k;
+            value = v;
+            next = n;
+        }
     }
 }
