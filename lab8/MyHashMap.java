@@ -1,10 +1,14 @@
-import java.util.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
-public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
-    int size;
-    ArrayList<Node> bucket;
-    double loadFactor;
-    Set<Key> kSet = new HashSet<Key>();
+public class MyHashMap<K, V> implements Map61B<K, V> {
+    private HashSet<K> kSet;
+    private ArrayList<ArrayList<Entry>> buckets;
+    private int size;
+    private double loadFactor;
 
     public MyHashMap() {
         this(16, 0.75);
@@ -14,34 +18,50 @@ public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
         this(initialSize, 0.75);
     }
 
-    public MyHashMap(int initialSize, double lf) {
-        bucket = new ArrayList<>(4);
-        loadFactor = lf;
-        size = 0;
+    public MyHashMap(int initialSize, double lF) {
+        loadFactor = lF;
+        kSet = new HashSet<>();
+        buckets = new ArrayList<>();
+        for (int i = 0; i < initialSize; i++) {
+            buckets.add(new ArrayList<Entry>());
+        }
     }
+
+    private class Entry {
+        K key;
+        V val;
+        Entry(K key, V val) {
+            this.key = key;
+            this.val = val;
+        }
+    }
+
     @Override
     public void clear() {
-        bucket = new ArrayList<Node>(4);
-        loadFactor = 0.75;
+        buckets = new ArrayList<ArrayList<Entry>>();
+        kSet = new HashSet<>();
         size = 0;
     }
 
     @Override
-    public boolean containsKey(Key key) {
-        /*int bucketNum = bucket.size();
-        Node target = bucket.get(key.hashCode() % bucketNum); //由于bucket里面存的是Node, 而key.hashCode() % bucketNum
-                                                                //是一个数字 并不可能出现在里面 target永远都是-1.我需要看下那个位置是否为null
-        return find(key, target) != null;*/
+    public boolean containsKey(K key) {
         return kSet.contains(key);
     }
 
     @Override
-    public Val get(Key key) {
-        int bucketNum = bucket.size();
-        Node target = bucket.get(hash(key, bucketNum));
-        return find(key, target).value;
+    public V get(K key) {
+        if (!containsKey(key)) {
+            return null;
+        } else {
+            ArrayList<Entry> tempList = buckets.get(hash(key, buckets.size()));
+            for (Entry e: tempList) {
+                if (e.key.equals(key)) {
+                    return e.val;
+                }
+            }
+            return null;
+        }
     }
-
 
     @Override
     public int size() {
@@ -49,104 +69,71 @@ public class MyHashMap<Key, Val> implements Map61B<Key, Val>{
     }
 
     @Override
-    public void put(Key key, Val value) {
-        /*double currFactor =  size / bucket.size();
-        int bucketNum = bucket.size();
-        Node tempNode;
-        if (currFactor >= loadFactor) {
-            resize(key, value, bucketNum);
+    public void put(K key, V value) {
+        if (containsKey(key)) {
+            update(key, value);
         } else {
-            tempNode = bucket.get(bucket.hashCode() % bucketNum);
-            Node targetNode = find(key, tempNode);
-            if (targetNode != null) {       //不等于null就说明链表里已经存在key了
-                targetNode.val = value;
-            } else {
-               targetNode = findLast(tempNode);
-               targetNode.key = key;
-               targetNode.val = value;
-               targetNode.next = null;
-               size += 1;
+            if (size() >= loadFactor * buckets.size()) {
+                resize();
             }
-        }*/
-        int bucketNum = bucket.size();
-        double currFactor = size / bucket.size();
-        Node tempNode;
-        if (currFactor >= loadFactor) {
-            resize(key, bucketNum);
-        } else {
-            if (kSet.contains(key)) {
-                update(key, value);
-            } else {
                 add(key, value);
-            }
         }
     }
 
     @Override
-    public Set<Key> keySet() {
+    public Set<K> keySet() {
         return kSet;
     }
 
     @Override
-    public Val remove(Key key) {
+    public V remove(K key) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Val remove(Key key, Val value) {
+    public V remove(K key, V value) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterator<Key> iterator() {
-        return keySet().iterator();
+    public Iterator<K> iterator() {
+        return kSet.iterator();
     }
 
-    private int hash(Key key, int bucketNum) {
-        return 1;
+
+    private int hash(K key, int capacity) {
+        return Math.floorMod(key.hashCode(), capacity);
     }
 
-    /**
-     * These are some helper functions.
-     * No need to read.
-     */
+    private void resize() {
+        int capacity = buckets.size();
+        ArrayList<ArrayList<Entry>> newBuckets = new ArrayList<ArrayList<Entry>>();
 
-    /** resize Function. */
-    private void resize(Key k, int cap) {
-        bucket = new ArrayList<Node>(cap * 2);
-        for (Key kTemp: kSet) {
-
+        for (int i = 0; i < capacity * 2; i++) {
+            newBuckets.add(new ArrayList<Entry>());
         }
+
+        for (K k: kSet) {
+            ArrayList<Entry> tempList = newBuckets.get(hash(k, newBuckets.size()));
+            tempList.add(new Entry(k, get(k)));
+        }
+        buckets = newBuckets;
     }
 
-    /** Returns specify Node if key is equal to k else return null. */
-    private Node find(Key k, Node node) {
-        while (node.key != null) {
-            if (node.key == k) {
-                return node;
+    private void update(K key, V val) {
+        ArrayList<Entry> tempList = buckets.get(hash(key, buckets.size()));
+        for (Entry e: tempList) {
+            if (e.key == key) {
+                e.val = val;
             }
-            node = node.next;
-        }
-        return node;
-    }
-
-    /** Return the last node. */
-    private Node findLast(Node node) {
-        while (node.key != null) {
-            node = node.next;
-        }
-        return node;
-    }
-
-    private class Node {
-        Key key;
-        Val value;
-        Node next;
-
-        Node(Key k, Val v, Node n) {
-            key = k;
-            value = v;
-            next = n;
         }
     }
+
+    private void add(K key, V val) {
+        ArrayList<Entry> tempList = buckets.get(hash(key, buckets.size()));
+        tempList.add(new Entry(key, val));
+        kSet.add(key);
+        size += 1;
+    }
+
 }
