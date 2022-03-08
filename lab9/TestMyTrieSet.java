@@ -22,6 +22,23 @@ public class TestMyTrieSet {
         }
     }
 
+    // assumes contain works
+    @Test
+    public void containsTest() {
+        MyTrieSet t= new MyTrieSet();
+        for (int i =0; i < 455; i++) {
+            t.add("hi" + i);
+        }
+        assertFalse(t.contains("h"));
+        assertFalse(t.contains("hello"));
+        assertTrue(t.contains("hi0"));
+        t.clear();
+        for (int i = 0; i < 10; i++) {
+            t.add("hi" + i);
+        }
+        assertFalse(t.contains("hi10"));
+    }
+
     // assumes add works
     @Test
     public void sanityContainsTest() {
