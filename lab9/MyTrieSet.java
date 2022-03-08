@@ -78,9 +78,10 @@ public class MyTrieSet implements TrieSet61B {
         ArrayList<String> wordList = new ArrayList<>();
         for (Node node: tempRoot.letterCollection) {
             if (node.val == prefix.charAt(i) && isLast(prefix, i)) {
-                wordList = addWordToList(tempRoot, prefix);
-            } else if (node.val == prefix.charAt(i)) {
-                keysWithPrefix(prefix, node ,i + 1);
+                ArrayList<String> tempList = addWordToList(node, prefix);
+                wordList.addAll(tempList);
+            } else if (node.val == prefix.charAt(i) && !isLast(prefix, i)) {
+                return keysWithPrefix(prefix, node ,i + 1);
             }
         }
         return wordList;
@@ -110,7 +111,8 @@ public class MyTrieSet implements TrieSet61B {
             if (node.isChar) {
                 list.add(prefix+node.val);
             }
-            addWordToList(node, prefix+ node.val);
+            ArrayList<String> tempList = addWordToList(node, prefix+node.val);
+            list.addAll(tempList);
         }
         return list;
     }

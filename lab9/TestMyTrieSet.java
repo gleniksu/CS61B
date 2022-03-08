@@ -42,7 +42,7 @@ public class TestMyTrieSet {
     // assumes add works
     @Test
     public void sanityContainsTest() {
-        MyTrieSet t = new MyTrieSet();
+        MyTrieSet t = new MyTrieSet();  
         assertFalse(t.contains("waterYouDoingHere"));
         t.add("waterYouDoingHere");
         assertTrue(t.contains("waterYouDoingHere"));
