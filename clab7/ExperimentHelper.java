@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 /**
  * Created by hug.
  */
@@ -36,12 +38,14 @@ public class ExperimentHelper {
         return (double) optimalIPL(N) / N;
     }
 
-    private static int twoPow(int i) {
-        int result = 1;
-        while (i > 0) {
-            result = result * 2;
-            i = i - 1;
+    public static void randomDeleteInsert(BST<Integer> bst) {
+        bst.deleteTakingSuccessor(bst.getRandomKey());
+        int num = StdRandom.uniform(100000);
+
+        while(bst.contains(num)) {
+            num = StdRandom.uniform(100000);
         }
-        return result;
+        bst.add(num);
     }
+
 }

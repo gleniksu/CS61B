@@ -66,23 +66,15 @@ public class BST<Key extends Comparable<Key>> {
         return getRandomNode(root).key;
     }
 
-    /** Returns the average depth of the tree. */
-    public int averageDepth(Node n) {
-        return averageDepth(root,0) / size();
+    public double averageDepth() {
+        return (double) depthSum(root) / root.size;
     }
 
-    /** Helper */
-    private int averageDepth(Node n, int level) {
-        //DONE
-        if (n.left == null && n.right == null) {
-            return level;
-        } else if (n.left == null) {
-            return averageDepth(n.right, level + 1) + level;
-        } else if (n.right == null) {
-            return averageDepth(n.left, level + 1) + level;
-        } else {
-            return averageDepth(n.left, level + 1) + averageDepth(n.right, level + 1) + level;
+    private int depthSum(Node x) {
+        if (x == null) {
+            return 0;
         }
+        return depthSum(x.left) + depthSum(x.right) + x.size - 1;
     }
 
 
@@ -265,4 +257,15 @@ public class BST<Key extends Comparable<Key>> {
     private boolean isEmpty() {
         return size() == 0;
     }
+
+    /*public double averageDepth() {
+        return (double) depthSum(root) / root.size;
+    }
+
+    private int depthSum(Node x) {
+        if (x == null) {
+            return 0;
+        }
+        return depthSum(x.left) + depthSum(x.right) + x.size - 1;
+    } */
 }
