@@ -38,8 +38,12 @@ public class ExperimentHelper {
         return (double) optimalIPL(N) / N;
     }
 
-    public static void randomDeleteInsert(BST<Integer> bst) {
-        bst.deleteTakingSuccessor(bst.getRandomKey());
+    public static void randomDeleteInsert(BST<Integer> bst, boolean symmetricTrigger) {
+        if (symmetricTrigger) {
+            bst.deleteTakingRandom(bst.getRandomKey());
+        } else {
+            bst.deleteTakingSuccessor(bst.getRandomKey());
+        }
         int num = StdRandom.uniform(100000);
 
         while(bst.contains(num)) {

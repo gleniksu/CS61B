@@ -43,7 +43,7 @@ public class Experiments {
         resultDepth[0] = bst.averageDepth();
 
         for (int j = 1; j <= m; j++) {
-            ExperimentHelper.randomDeleteInsert(bst);
+            ExperimentHelper.randomDeleteInsert(bst, false);
             numOfExperiments[j] = j;
             resultDepth[j] = bst.averageDepth();
         }
@@ -53,9 +53,38 @@ public class Experiments {
         new SwingWrapper(chart).displayChart();
     }
 
+    public static void experiment3() {
+        int m = 10000; // the number of experiments
+        int n = 5000; // the number of items
+
+        int[] items = StdRandom.permutation(100000, n);
+        BST<Integer> bst = new BST<>();
+
+        double[] numOfExperiment = new double[m + 1];
+        double[] averageDepth = new double[m + 1];
+        for (int item : items) {
+            bst.add(item);
+        }
+
+        numOfExperiment[0] = 0;
+        averageDepth[0] = bst.averageDepth();
+
+        for (int i = 1; i <= m; i++) {
+            ExperimentHelper.randomDeleteInsert(bst, true);
+            numOfExperiment[i] = i;
+            averageDepth[i] = bst.averageDepth();
+        }
+
+        XYChart chart = new XYChartBuilder().width(800).height(600)
+                .xAxisTitle("Number of Experiments").yAxisTitle("Average Depth").build();
+        chart.addSeries("Symmetric Delete/Insert", numOfExperiment, averageDepth);
+        new SwingWrapper(chart).displayChart();
+
+    }
+
     public static void main(String[] args) {
-        //experiment1();
+        experiment1();
         experiment2();
-        //experiment3();
+        experiment3();
     }
 }
