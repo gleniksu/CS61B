@@ -54,5 +54,5 @@ public class FlightSolverTest {
         FlightSolver solver = new FlightSolver(makeFlights(startTimes, endTimes, passengerCounts));
         assertEquals(65, solver.solve());
     }
-
+    
 }
