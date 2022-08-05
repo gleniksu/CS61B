@@ -28,7 +28,7 @@ public class ArrayHeapMinPQ<T> implements  ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException("Item already exists in the priority queue.");
         }
-        if (size >= minHeap.length - 1) {
+        if (size == minHeap.length - 1) {
             resize(minHeap.length * 2);
         }
         minHeap[size] = new Vertex<T>(item, priority);
@@ -56,7 +56,7 @@ public class ArrayHeapMinPQ<T> implements  ExtrinsicMinPQ<T> {
         swap(0, size-1);
         size = size - 1;
         sink(0);
-        if (minHeap.length * LOAD_FACTOR > size) {
+        if (minHeap.length * LOAD_FACTOR >= size) {
             resize(minHeap.length / 2);
         }
         return min.item;

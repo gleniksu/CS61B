@@ -139,12 +139,8 @@ public class ArrayHeapMinPQTest {
         long start = System.currentTimeMillis();
         ExtrinsicMinPQ<Integer> minHeap = new NaiveMinPQ<>();
 
-        for (int i = 0; i < 5000; i += 1) {
+        for (int i = 0; i < 200000; i += 1) {
             minHeap.add(i, 100000 - i);
-        }
-
-        for (int i = 0; i < 4000; i++) {
-            minHeap.removeSmallest();
         }
         long end = System.currentTimeMillis();
         System.out.println("Total time elapsed: " + (end - start) / 1000.0 +  " seconds.");
@@ -156,4 +152,5 @@ public class ArrayHeapMinPQTest {
         long end2 = System.currentTimeMillis();
         System.out.println("Total time elapsed: " + (end2 - start2) / 1000.0 +  " seconds.");
     }
+
 }
