@@ -1,8 +1,8 @@
-package bearmaps;
+package bearmaps.proj2ab;
 
-import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ArrayHeapMinPQ<T> implements  ExtrinsicMinPQ<T> {
     Vertex<T>[] minHeap;
@@ -56,6 +56,7 @@ public class ArrayHeapMinPQ<T> implements  ExtrinsicMinPQ<T> {
         swap(0, size-1);
         size = size - 1;
         sink(0);
+        keyMap.remove(min.item);
         if (minHeap.length * LOAD_FACTOR > size) {
             resize(minHeap.length / 2);
         }

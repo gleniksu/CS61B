@@ -13,7 +13,6 @@ import java.util.List;
  * runtime of your solver. Selection sort is expected Theta(N^2) and Collections.sort is expected Theta(N log N).
  */
 public class BnBSolverTimingTests {
-
     private static Pair<List<Bear>, List<Bed>> randomBearsAndBeds(int size) {
         ArrayList<Bear> bears = new ArrayList<>();
         ArrayList<Bed> beds = new ArrayList<>();

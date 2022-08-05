@@ -15,7 +15,6 @@ public class LazySolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private double solutionWeight;
     private List<Vertex> solution;
     private double timeSpent;
-
     /* ignores timeout since algorithm is so fast. */
     public LazySolver(AStarGraph<Vertex> G, Vertex start, Vertex goal, double timeout) {
         Stopwatch sw = new Stopwatch();
